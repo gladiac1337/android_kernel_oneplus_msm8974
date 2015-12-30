@@ -98,7 +98,6 @@ static struct notifier_block panic_blk = {
 };
 
 #define __LOG_BUF_LEN	(1 << CONFIG_LOG_BUF_SHIFT)
-extern char __log_buf[__LOG_BUF_LEN];
 
 typedef unsigned int	uint32;
 
@@ -156,9 +155,6 @@ static void set_dload_mode(int on)
 		__raw_writel(on ? 0xCE14091A : 0,
 		       dload_mode_addr + sizeof(unsigned int));
 		#ifdef CONFIG_VENDOR_EDIT
-		//Add this to value for dump KMSG.bin
-		__raw_writel(on ? (virt_to_phys(__log_buf)) : 0, dload_mode_addr + sizeof(unsigned int) *10 );
-		__raw_writel(on ? __LOG_BUF_LEN : 0, dload_mode_addr + sizeof(unsigned int) *11 );
 		// #ifdef VENDOR_EDIT
 		// neiltsai, 20150812, add for ram dump kernel version
 		__raw_writel(on ? (virt_to_phys(linux_banner)): 0, dload_mode_addr + sizeof(unsigned int) *12);
